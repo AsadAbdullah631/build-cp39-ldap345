@@ -23,7 +23,19 @@ if errorlevel 1 exit /B 1
 set INCLUDE=%INCLUDE%;%~dp0\include
 set LIB=%LIB%;%~dp0\lib
 
-msbuild win32\vc17\liblber.sln /m /t:Clean;Rebuild /p:UseEnv=true /p:Configuration=Release /p:Platform=%VS_PLATFORM%
+msbuild.exe win32\vc17\liblber.sln /m /t:Clean;Rebuild ^
+    /p:Configuration=Release ^
+    /p:ToolsVersion=Current ^
+    /p:VisualStudioVersion=%VC_VER% ^
+    /p:Platform=%VS_PLATFORM% ^
+    /p:PlatformToolset=%VS_PLATFORM_TOOLSET% ^
+    /p:PostBuildEventUseInBuild=false ^
+    /p:WholeProgramOptimization=false ^
+    /p:RuntimeLibrary=MultiThreaded ^
+    /p:UseEnv=true ^
+    /p:SkipUWP=true ^
+    /p:WindowsTargetPlatformVersion=10;WindowsTargetPlatformMinVersion=10
+
 if errorlevel 1 exit /B 1
 
 copy /Y /B Release\*.lib ..\lib
